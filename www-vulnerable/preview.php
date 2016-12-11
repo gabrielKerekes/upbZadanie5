@@ -3,7 +3,7 @@
    $file = $_GET['file'];
    if(isset($file))
    {
-       include("$file");
+       include("$file" . ".php");
    }
    else
    {

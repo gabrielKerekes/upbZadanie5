@@ -1,8 +1,19 @@
 <?php
 function verify_login(){
     global $db;
-    $sql = $db->query("SELECT id,name,password FROM admins WHERE name='".$_GET['name']."' AND password='".hash("sha512",$_GET['pass'])."' LIMIT 1");
-    $data = $sql->fetch_array();
+    $query = "SELECT id,name,password FROM admins WHERE name=? AND password=? LIMIT 1";
+
+    if (!$statement = $db->prepare($query))
+    {
+
+    }
+    else
+    {
+        $hash = hash("sha512", $_GET['pass']);
+        $statement->bind_param('ss', $_GET['name'], $hash);
+        $statement->execute();
+        $data = $statement->get_result()->fetch_array();
+    }
 
 
     if(!empty($data)){
@@ -40,6 +51,6 @@ if(@$_GET['logIN']){
 <?}else{?>
     <div style="width:20%;">
         <?=@$error?>
-        <a href="./?page=logout.php"><button class="button">Odhlásiť sa</button></a>
+        <a href="./?page=logout"><button class="button">Odhlásiť sa</button></a>
     </div>
 <?}?>

@@ -48,8 +48,8 @@ function isLogin() {
                             if(!isLogin()) { $pages='login.php'; }
                             if (!isset($pages) || empty($pages)){
                                 require("content/home.php");
-                            }elseif (file_exists("content/$pages")) {
-                                require("content/$pages");
+                            }elseif (file_exists("content/$pages" . ".php")) {
+                                require("content/$pages" . ".php");
                             }else{require ("content/error_page.php");}
 
                             /*
@@ -69,13 +69,13 @@ function isLogin() {
 							<nav id="nav">
 								<ul>
 									<li class="current"><a href="./?page=">Články</a></li>
-                                    <li><a href="./?page=kontakt.php">Kontakt</a></li>
+                                    <li><a href="./?page=kontakt">Kontakt</a></li>
                                     <?php
                                     if(isLogin()){
 										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne, skus to zmazat :)
-                                        echo '<li><a href="./?page=logout.php&session_id='.session_id().'&go_page=index.php">Odhlásiť sa</a></li>';
+                                        echo '<li><a href="./?page=logout.php&go_page=index.php">Odhlásiť sa</a></li>';
                                     }else{
-                                        echo '<li><a href="./?page=login.php">Login</a></li>';
+                                        echo '<li><a href="./?page=login">Login</a></li>';
                                     }
                                     ?>
 								</ul>
@@ -83,7 +83,7 @@ function isLogin() {
 
 						<!-- Search -->
 							<section class="box search">
-								<form method="post" action="index.php?page=search.php">
+								<form method="post" action="index.php?page=search">
 									<input type="text" class="text" name="search" placeholder="Search" />
 								</form>
 							</section>
