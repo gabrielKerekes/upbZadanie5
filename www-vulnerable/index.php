@@ -45,12 +45,16 @@ function isLogin() {
                             <?php
 							//A4 - LFI najjednoduschsie riesenie spociva v dopisani .php za kazdy requirnuty file
                             @$pages=$_GET["page"];
-                            if(!isLogin()) { $pages='login.php'; }
+                            if(!isLogin()) {
+                            	$pages='login';
+                            }
                             if (!isset($pages) || empty($pages)){
                                 require("content/home.php");
                             }elseif (file_exists("content/$pages" . ".php")) {
                                 require("content/$pages" . ".php");
-                            }else{require ("content/error_page.php");}
+                            }else{
+                            	require ("content/error_page.php");
+                            }
 
                             /*
                              * A4 - Nuz ked ak to osetris vyssie spomenutym sposobom tak musis vsetky linky prepisat z whatever.php na whatever nasledne vymazat .php
@@ -72,8 +76,12 @@ function isLogin() {
                                     <li><a href="./?page=kontakt">Kontakt</a></li>
                                     <?php
                                     if(isLogin()){
+                                        //A8 - vytvorenie session token a pridanie csrf do linku s hodnotou tokenu
+                                        //$_SESSION["token"] = md5(uniqid(mt_rand(), true));
 										// A10 - sessionID sa prenasa v cookine, takze tu je zbytocne, skus to zmazat :)
-                                        echo '<li><a href="./?page=logout.php&go_page=index.php">Odhlásiť sa</a></li>';
+                                        echo '<li><a href="./?page=logout&go_page=index.php&csrf=' . $_SESSION["token"] . '">Odhlásiť sa</a></li>';
+                                        //echo '<li><a href="./?page=logout&go_page=index.php">Odhlásiť sa</a></li>';
+
                                     }else{
                                         echo '<li><a href="./?page=login">Login</a></li>';
                                     }
@@ -83,8 +91,10 @@ function isLogin() {
 
 						<!-- Search -->
 							<section class="box search">
-								<form method="post" action="index.php?page=search">
+								<form method="post" action="index.php?page=search&csrf">
 									<input type="text" class="text" name="search" placeholder="Search" />
+                                    <!--   A8 -->
+                                    <input type="hidden" name="csrf" value="<?php echo $_SESSION["token"];?>"/>
 								</form>
 							</section>
 
