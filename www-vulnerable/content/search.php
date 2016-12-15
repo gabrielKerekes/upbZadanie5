@@ -6,9 +6,8 @@
 if (isset($_GET["csrf"]) && $_GET["csrf"] == $_SESSION["token"]) {
     $query = "SELECT * FROM articles WHERE title LIKE ? OR content LIKE ?";
 
-    if (!$statement = $db->prepare($query)) {
-
-    } else {
+    if (!$statement = $db->prepare($query))
+    {
         $searchString = $_POST['search'];
         $searchString = htmlspecialchars($searchString);
         $param = "%{$searchString}%";

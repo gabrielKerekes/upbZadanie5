@@ -3,18 +3,13 @@ function verify_login(){
     global $db;
     $query = "SELECT id,name,password FROM admins WHERE name=? AND password=? LIMIT 1";
 
-    if (!$statement = $db->prepare($query))
-    {
-
-    }
-    else
+    if ($statement = $db->prepare($query))
     {
         $hash = hash("sha512", $_GET['pass']);
         $statement->bind_param('ss', $_GET['name'], $hash);
         $statement->execute();
         $data = $statement->get_result()->fetch_array();
     }
-
 
     if(!empty($data)){
         $_SESSION['id']  = $data['id'];
